@@ -9,7 +9,7 @@ namespace WSClient
         static void Main(string[] args)
         {
             // WS client instance
-            using (WebSocket wsc = new WebSocket("ws://127.0.0.1:9090/Echo"))
+            using (WebSocket wsc = new WebSocket("ws://127.0.0.1:9090/EchoAll"))
             {
                 // Add Handler to listen
                 wsc.OnMessage += WS_AnswerToEmitter;

@@ -16,6 +16,17 @@ namespace WSServer
         }
     }
 
+    public class EchoAll : WebSocketBehavior
+    {
+        protected override void OnMessage(MessageEventArgs e)
+        {
+            Console.WriteLine("Server: Received message from client is -> '" + e.Data + "'");
+            // Send message to all sessions
+            Sessions.Broadcast("Hi, I'm a server. I received your message '" + e.Data + "'");
+            
+        }
+    }
+
     class Program
     {
         static void Main(string[] args)
@@ -23,13 +34,16 @@ namespace WSServer
             // WS server instance
             WebSocketServer wssv = new WebSocketServer("ws://127.0.0.1:9090");
 
-            // WS Service Route with Echo WS Behavior
+            // WS Service Route with Echos WS Behavior
             wssv.AddWebSocketService<Echo>("/Echo");
+            wssv.AddWebSocketService<EchoAll>("/EchoAll");
 
             // Start Server
             wssv.Start();
 
-            Console.WriteLine("Server: started on ws://127.0.0.1:9090/Echo");
+            Console.WriteLine("Server: started on ws://127.0.0.1:9090");
+            Console.WriteLine("Use /Echo to send and receive from 1 client");
+            Console.WriteLine("Use /EchoAll to send and receive from many clients");
 
             // Stop server on key pressed
             Console.ReadKey();
