@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 
 using WebSocketSharp;
 
@@ -27,7 +28,16 @@ namespace WSClient
 
         private static void WS_AnswerToEmitter(object sender, MessageEventArgs e)
         {
-            Console.WriteLine("Client: Message received from server is -> '" + e.Data + "'");
+            //Console.WriteLine("Client: Message received from server is -> '" + e.Data + "'");
+            try
+            {
+                Message message = JsonConvert.DeserializeObject<Message>(e.Data);
+                Console.WriteLine("Created a message: '" + message.Content + "' at " + message.CreatedAt + " from " +  message.Sender + " " + message.Room);
+            } catch (Exception)
+            {
+                Console.WriteLine("Client: Hmm, I don't understand " + e.Data);
+            }
+
         }
     }
 }

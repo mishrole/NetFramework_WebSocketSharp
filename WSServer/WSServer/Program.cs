@@ -1,5 +1,5 @@
-﻿using System;
-
+﻿using Newtonsoft.Json;
+using System;
 using WebSocketSharp;
 using WebSocketSharp.Server;
 
@@ -22,8 +22,17 @@ namespace WSServer
         {
             Console.WriteLine("Server: Received message from client is -> '" + e.Data + "'");
             // Send message to all sessions
-            Sessions.Broadcast("Hi, I'm a server. I received your message '" + e.Data + "'");
-            
+            var message = new Message
+            {
+                Content = "Received message from client",
+                CreatedAt = DateTime.Now,
+                Room = "/EchoAll",
+                Sender = "Server",
+            };
+
+            //Sessions.Broadcast("Hi, I'm a server. I received your message '" + e.Data + "'");
+            Sessions.Broadcast(JsonConvert.SerializeObject(message));
+
         }
     }
 
